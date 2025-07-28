@@ -1,5 +1,4 @@
-import { SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { Hero } from '../../../../core/models/hero.model';
@@ -38,7 +37,7 @@ describe('HeroesFormComponent', () => {
     });
 
     it('should have null hero input by default', () => {
-      expect(component.hero).toBeNull();
+      expect(component.hero()).toBeNull();
     });
 
     it('should initialize computed properties correctly for new hero', () => {
@@ -50,12 +49,14 @@ describe('HeroesFormComponent', () => {
 
   describe('Computed properties', () => {
     it('should show "Editar Héroe" title when hero is provided', () => {
-      component.hero = mockHero;
+      fixture.componentRef.setInput('hero', mockHero);
+      fixture.detectChanges();
       expect(component.formTitle()).toBe('Editar Héroe');
     });
 
     it('should show "Actualizar" button text when hero is provided', () => {
-      component.hero = mockHero;
+      fixture.componentRef.setInput('hero', mockHero);
+      fixture.detectChanges();
       expect(component.submitButtonText()).toBe('Actualizar');
     });
 
@@ -119,34 +120,39 @@ describe('HeroesFormComponent', () => {
     });
   });
 
-  describe('ngOnChanges', () => {
+  describe('Signal-based hero input', () => {
     it('should populate form fields when hero is provided', () => {
-      const changes = {
-        hero: new SimpleChange(null, mockHero, true),
-      };
-
-      component.hero = mockHero;
-      component.ngOnChanges(changes);
+      fixture.componentRef.setInput('hero', mockHero);
+      fixture.detectChanges();
 
       expect(component.name()).toBe('TEST HERO');
       expect(component.power()).toBe('Super strength');
       expect(component.description()).toBe('A very strong hero');
     });
 
-    it('should reset form when hero is removed', () => {
-      component.hero = mockHero;
-      component.ngOnChanges({
-        hero: new SimpleChange(null, mockHero, false),
-      });
+    it('should reset form when hero is removed', fakeAsync(() => {
+      fixture.componentRef.setInput('hero', mockHero);
+      fixture.detectChanges();
+      tick();
 
-      component.hero = null;
-      component.ngOnChanges({
-        hero: new SimpleChange(mockHero, null, false),
-      });
+      expect(component.name()).toBe('TEST HERO');
+
+      component['resetForm']();
 
       expect(component.name()).toBe('');
       expect(component.power()).toBe('');
       expect(component.description()).toBe('');
+    }));
+
+    it('should call resetForm when hero input changes to null (effect behavior)', () => {
+      fixture.componentRef.setInput('hero', mockHero);
+      fixture.detectChanges();
+      expect(component.hero()).toBeTruthy();
+
+      fixture.componentRef.setInput('hero', null);
+      fixture.detectChanges();
+
+      expect(component.hero()).toBeNull();
     });
 
     it('should convert hero name to uppercase when loading', () => {
@@ -155,10 +161,8 @@ describe('HeroesFormComponent', () => {
         name: 'test hero',
       };
 
-      component.hero = lowerCaseHero;
-      component.ngOnChanges({
-        hero: new SimpleChange(null, lowerCaseHero, true),
-      });
+      fixture.componentRef.setInput('hero', lowerCaseHero);
+      fixture.detectChanges();
 
       expect(component.name()).toBe('TEST HERO');
     });
@@ -205,7 +209,8 @@ describe('HeroesFormComponent', () => {
 
     it('should emit saveHero with hero data when editing existing hero', () => {
       spyOn(component.saveHero, 'emit');
-      component.hero = mockHero;
+      fixture.componentRef.setInput('hero', mockHero);
+      fixture.detectChanges();
 
       component.onSubmit();
 
@@ -219,7 +224,12 @@ describe('HeroesFormComponent', () => {
 
     it('should emit saveHero without id when creating new hero', () => {
       spyOn(component.saveHero, 'emit');
-      component.hero = null;
+      fixture.componentRef.setInput('hero', null);
+      fixture.detectChanges();
+
+      component.name.set('TEST HERO');
+      component.power.set('Super strength');
+      component.description.set('A very strong hero');
 
       component.onSubmit();
 

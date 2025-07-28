@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, effect, inject, input, output, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -26,10 +16,10 @@ import {
   styleUrls: ['./heroes-table.component.css'],
   imports: [CommonModule, MatTableModule, MatButtonModule, MatPaginatorModule],
 })
-export class HeroesTableComponent implements AfterViewInit, OnChanges {
-  @Input() heroes: Hero[] = [];
-  @Output() editHero = new EventEmitter<Hero>();
-  @Output() deleteHero = new EventEmitter<number>();
+export class HeroesTableComponent implements AfterViewInit {
+  heroes = input<Hero[]>([]);
+  editHero = output<Hero>();
+  deleteHero = output<number>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -38,14 +28,14 @@ export class HeroesTableComponent implements AfterViewInit, OnChanges {
   displayedColumns: string[] = ['id', 'name', 'power', 'description', 'actions'];
   dataSource = new MatTableDataSource<Hero>([]);
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+  constructor() {
+    effect(() => {
+      this.dataSource.data = this.heroes();
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['heroes']) {
-      this.dataSource.data = this.heroes;
-    }
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
   }
 
   onEdit(hero: Hero): void {

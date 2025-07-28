@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  computed,
-  EventEmitter,
-  Input,
-  OnChanges,
-  Output,
-  signal,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, computed, effect, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,22 +12,35 @@ import { UppercaseDirective } from '../../../../shared/directives/uppercase.dire
   styleUrls: ['./heroes-form.component.css'],
   imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, UppercaseDirective],
 })
-export class HeroesFormComponent implements OnChanges {
-  @Input() hero: Hero | null = null;
-  @Output() saveHero = new EventEmitter<Omit<Hero, 'id'> | Hero>();
-  @Output() cancelForm = new EventEmitter<void>();
+export class HeroesFormComponent {
+  hero = input<Hero | null>(null);
+  saveHero = output<Omit<Hero, 'id'> | Hero>();
+  cancelForm = output<void>();
 
   readonly name = signal('');
   readonly power = signal('');
   readonly description = signal('');
 
   readonly formTitle = computed(() => {
-    return this.hero ? 'Editar Héroe' : 'Agregar Héroe';
+    return this.hero() ? 'Editar Héroe' : 'Agregar Héroe';
   });
 
   readonly submitButtonText = computed(() => {
-    return this.hero ? 'Actualizar' : 'Guardar';
+    return this.hero() ? 'Actualizar' : 'Guardar';
   });
+
+  constructor() {
+    effect(() => {
+      const heroValue = this.hero();
+      if (heroValue) {
+        this.name.set(heroValue.name.toUpperCase());
+        this.power.set(heroValue.power);
+        this.description.set(heroValue.description);
+      } else {
+        this.resetForm();
+      }
+    });
+  }
 
   readonly isValid = computed(() => {
     return (
@@ -57,18 +61,6 @@ export class HeroesFormComponent implements OnChanges {
   readonly descriptionError = computed(() =>
     this.description().trim().length === 0 ? 'La descripción es requerida' : null,
   );
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['hero']) {
-      if (this.hero) {
-        this.name.set(this.hero.name.toUpperCase());
-        this.power.set(this.hero.power);
-        this.description.set(this.hero.description);
-      } else {
-        this.resetForm();
-      }
-    }
-  }
 
   onNameChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
@@ -96,8 +88,9 @@ export class HeroesFormComponent implements OnChanges {
       description: this.description(),
     };
 
-    if (this.hero) {
-      this.saveHero.emit({ ...heroData, id: this.hero.id });
+    const heroValue = this.hero();
+    if (heroValue) {
+      this.saveHero.emit({ ...heroData, id: heroValue.id });
     } else {
       this.saveHero.emit(heroData);
     }

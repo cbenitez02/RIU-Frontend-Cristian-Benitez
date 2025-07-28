@@ -131,8 +131,16 @@ describe('HeroesPageComponent', () => {
   });
 
   describe('Delete hero functionality', () => {
+    let originalConsoleError: typeof console.error;
+
     beforeEach(() => {
       heroService.deleteAsync.and.returnValue(of(true));
+      originalConsoleError = console.error;
+      console.error = jasmine.createSpy('console.error');
+    });
+
+    afterEach(() => {
+      console.error = originalConsoleError;
     });
 
     it('should successfully delete a hero', () => {
@@ -152,13 +160,12 @@ describe('HeroesPageComponent', () => {
     });
 
     it('should handle delete error gracefully', () => {
-      const consoleSpy = spyOn(console, 'error');
       const errorMessage = 'Server error';
       heroService.deleteAsync.and.returnValue(throwError(() => new Error(errorMessage)));
 
       component.onDeleteHero(1);
 
-      expect(consoleSpy).toHaveBeenCalledWith('Error deleting hero:', jasmine.any(Error));
+      expect(console.error).toHaveBeenCalledWith('Error deleting hero:', jasmine.any(Error));
       expect(loadingService.hide).toHaveBeenCalled();
     });
 

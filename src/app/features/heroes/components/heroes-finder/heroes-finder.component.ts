@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, signal } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,8 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 export class HeroesFinderComponent {
   public searchTerm = signal('');
 
-  @Output() searchTermChange = new EventEmitter<string>();
-  @Output() addHero = new EventEmitter<void>();
+  searchTermChange = output<string>();
+  addHero = output<void>();
 
   onSearchChange(event: Event) {
     const value = (event.target as HTMLInputElement).value;

@@ -1,4 +1,3 @@
-import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -51,7 +50,7 @@ describe('HeroesTableComponent', () => {
     });
 
     it('should initialize with empty heroes array', () => {
-      expect(component.heroes).toEqual([]);
+      expect(component.heroes()).toEqual([]);
     });
 
     it('should initialize with correct displayed columns', () => {
@@ -63,38 +62,31 @@ describe('HeroesTableComponent', () => {
     });
   });
 
-  describe('ngOnChanges - Data updates', () => {
-    it('should update dataSource when heroes input changes', () => {
-      const changes = {
-        heroes: new SimpleChange([], mockHeroes, false),
-      };
-
-      component.heroes = mockHeroes;
-      component.ngOnChanges(changes);
+  describe('Signal-based data updates', () => {
+    it('should update dataSource when heroes input signal changes', () => {
+      fixture.componentRef.setInput('heroes', mockHeroes);
+      fixture.detectChanges();
 
       expect(component.dataSource.data).toEqual(mockHeroes);
     });
 
     it('should handle empty heroes array', () => {
-      const changes = {
-        heroes: new SimpleChange(mockHeroes, [], false),
-      };
+      fixture.componentRef.setInput('heroes', mockHeroes);
+      fixture.detectChanges();
+      expect(component.dataSource.data).toEqual(mockHeroes);
 
-      component.heroes = [];
-      component.ngOnChanges(changes);
-
+      fixture.componentRef.setInput('heroes', []);
+      fixture.detectChanges();
       expect(component.dataSource.data).toEqual([]);
     });
 
-    it('should not update dataSource when other inputs change', () => {
-      const originalData = component.dataSource.data;
-      const changes = {
-        someOtherProperty: new SimpleChange('old', 'new', false),
-      };
+    it('should automatically update dataSource through effect when signal changes', () => {
+      expect(component.dataSource.data).toEqual([]);
 
-      component.ngOnChanges(changes);
+      fixture.componentRef.setInput('heroes', mockHeroes);
+      fixture.detectChanges();
 
-      expect(component.dataSource.data).toBe(originalData);
+      expect(component.dataSource.data).toEqual(mockHeroes);
     });
   });
 
@@ -172,10 +164,7 @@ describe('HeroesTableComponent', () => {
 
   describe('Template integration', () => {
     beforeEach(() => {
-      component.heroes = mockHeroes;
-      component.ngOnChanges({
-        heroes: new SimpleChange([], mockHeroes, false),
-      });
+      fixture.componentRef.setInput('heroes', mockHeroes);
       fixture.detectChanges();
     });
 
