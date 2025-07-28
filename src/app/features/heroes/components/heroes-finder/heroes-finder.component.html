@@ -1,0 +1,13 @@
+<div class="finder-container">
+  <mat-form-field appearance="outline" class="finder-input">
+    <mat-label>Buscar héroe</mat-label>
+    <input
+      matInput
+      type="text"
+      [value]="searchTerm()"
+      (input)="onSearchChange($event)"
+      placeholder="Nombre del héroe"
+    />
+  </mat-form-field>
+  <button mat-flat-button color="primary" (click)="onAddHero()">Añadir héroe</button>
+</div>

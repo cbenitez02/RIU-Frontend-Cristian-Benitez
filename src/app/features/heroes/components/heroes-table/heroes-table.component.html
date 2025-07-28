@@ -1,0 +1,46 @@
+<div class="heroes-table-container">
+  <mat-table [dataSource]="dataSource" class="mat-elevation-8">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+      <mat-cell *matCellDef="let hero">{{ hero.id }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Nombre</mat-header-cell>
+      <mat-cell *matCellDef="let hero">{{ hero.name }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="power">
+      <mat-header-cell *matHeaderCellDef>Poder</mat-header-cell>
+      <mat-cell *matCellDef="let hero">{{ hero.power }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <mat-header-cell *matHeaderCellDef>Descripción</mat-header-cell>
+      <mat-cell *matCellDef="let hero">{{ hero.description }}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+      <mat-cell *matCellDef="let hero">
+        <button mat-button (click)="onEdit(hero)">Editar</button>
+        <button mat-button (click)="onDelete(hero)">Borrar</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+
+  <mat-paginator
+    [pageSizeOptions]="[5, 10]"
+    [pageSize]="5"
+    showFirstLastButtons
+    aria-label="Seleccionar página de héroes"
+  >
+  </mat-paginator>
+
+  <div *ngIf="heroes.length === 0" class="no-data">
+    <p>No hay héroes para mostrar</p>
+  </div>
+</div>

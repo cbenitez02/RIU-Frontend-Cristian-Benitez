@@ -1,0 +1,21 @@
+<div class="main-container">
+  <h1>Lista de Héroes</h1>
+
+  <app-heroes-finder
+    (searchTermChange)="onSearchTermChange($event)"
+    (addHero)="onAddHero()"
+  ></app-heroes-finder>
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <p>Cargando héroes...</p>
+    </div>
+  } @else {
+    <app-heroes-table
+      [heroes]="filteredHeroes()"
+      (editHero)="onEditHero($event)"
+      (deleteHero)="onDeleteHero($event)"
+    >
+    </app-heroes-table>
+  }
+</div>
