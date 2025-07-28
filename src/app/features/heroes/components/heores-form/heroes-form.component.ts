@@ -19,7 +19,6 @@ import { UppercaseDirective } from '../../../../shared/directives/uppercase.dire
   selector: 'app-heroes-form',
   templateUrl: './heroes-form.component.html',
   styleUrls: ['./heroes-form.component.css'],
-  standalone: true,
   imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, UppercaseDirective],
 })
 export class HeroesFormComponent implements OnChanges {

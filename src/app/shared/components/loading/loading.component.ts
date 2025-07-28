@@ -7,7 +7,6 @@ import { LoadingService } from '../../../core/services/loading.service';
   selector: 'app-loading',
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.css',
-  standalone: true,
   imports: [CommonModule, MatProgressSpinnerModule],
 })
 export class LoadingComponent {

@@ -11,7 +11,6 @@ import { HeroesFormComponent } from '../../components/heores-form/heroes-form.co
   selector: 'app-edit-heroes',
   templateUrl: './edit-heroes.component.html',
   styleUrls: ['./edit-heroes.component.css'],
-  standalone: true,
   imports: [HeroesFormComponent, MatButtonModule],
 })
 export class EditHeroesComponent implements OnInit {

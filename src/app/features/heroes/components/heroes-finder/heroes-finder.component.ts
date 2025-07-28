@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
   selector: 'app-heroes-finder',
   templateUrl: './heroes-finder.component.html',
   styleUrls: ['./heroes-finder.component.css'],
-  standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatButtonModule],
 })
 export class HeroesFinderComponent {

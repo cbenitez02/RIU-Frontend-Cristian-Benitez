@@ -8,7 +8,6 @@ import { HeroesFormComponent } from '../../components/heores-form/heroes-form.co
   selector: 'app-add-heroes',
   templateUrl: './add-heroes.component.html',
   styleUrls: ['./add-heroes.component.css'],
-  standalone: true,
   imports: [HeroesFormComponent],
 })
 export class AddHeroesComponent {
