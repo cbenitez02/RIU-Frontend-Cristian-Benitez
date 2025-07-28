@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  riu-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: riu-frontend-app
+    ports:
+      - '4200:80'
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - app-network
+
+  # Opcional: Servicio para desarrollo con hot reload
+  riu-frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: riu-frontend-dev
+    ports:
+      - '4201:4200'
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    profiles:
+      - dev
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

@@ -1,0 +1,42 @@
+# Dependencias
+node_modules
+npm-debug.log*
+
+# Archivos de build
+dist
+.angular
+
+# Archivos de IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de git
+.git
+.gitignore
+
+# Archivos de testing
+coverage
+*.tgz
+
+# Archivos de Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Archivos temporales
+*.tmp
+*.log
+
+# Variables de entorno
+.env
+.env.local
+.env.production
+
+# Archivos de configuración específicos del entorno de desarrollo
+karma.conf.js
