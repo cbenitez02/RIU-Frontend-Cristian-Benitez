@@ -1,0 +1,43 @@
+<div class="confirm-delete-modal">
+  <div class="modal-header">
+    <h2 mat-dialog-title>
+      <mat-icon class="warning-icon">warning</mat-icon>
+      Confirmar Eliminación
+    </h2>
+  </div>
+
+  <div mat-dialog-content class="modal-content">
+    <p class="warning-message">
+      ¿Estás seguro de que deseas eliminar este héroe? Esta acción no se puede deshacer.
+    </p>
+
+    <div class="hero-details">
+      <h3>Datos del héroe a eliminar:</h3>
+      <div class="hero-info">
+        <div class="info-row">
+          <span class="label">ID:</span>
+          <span class="value">{{ data.hero.id }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Nombre:</span>
+          <span class="value">{{ data.hero.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Poder:</span>
+          <span class="value">{{ data.hero.power }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Descripción:</span>
+          <span class="value">{{ data.hero.description }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="modal-actions">
+    <button mat-button class="cancel-button" (click)="onCancel()">Cancelar</button>
+    <button mat-flat-button color="primary" class="delete-button" (click)="onConfirm()">
+      Eliminar Héroe
+    </button>
+  </div>
+</div>
