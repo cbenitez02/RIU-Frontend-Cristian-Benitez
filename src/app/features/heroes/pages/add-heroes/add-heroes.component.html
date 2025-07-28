@@ -1,0 +1,8 @@
+<div class="add-hero-container">
+  <div class="page-header">
+    <h1>Añadir Nuevo Héroe</h1>
+    <p>Complete el formulario para agregar un nuevo héroe a la lista.</p>
+  </div>
+
+  <app-heroes-form (saveHero)="onSaveHero($event)" (cancelForm)="onCancel()"> </app-heroes-form>
+</div>

@@ -1,0 +1,55 @@
+<form class="hero-form">
+  <h2>{{ formTitle() }}</h2>
+
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Nombre</mat-label>
+    <input
+      matInput
+      type="text"
+      appUppercase
+      [value]="name()"
+      (input)="onNameChange($event)"
+      placeholder="Nombre del héroe"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Poder</mat-label>
+    <input
+      matInput
+      type="text"
+      [value]="power()"
+      (input)="onPowerChange($event)"
+      placeholder="Poder principal"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="form-field">
+    <mat-label>Descripción</mat-label>
+    <textarea
+      matInput
+      rows="4"
+      [value]="description()"
+      (input)="onDescriptionChange($event)"
+      placeholder="Descripción del héroe"
+      required
+    >
+    </textarea>
+  </mat-form-field>
+
+  <div class="form-actions">
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      [disabled]="!isValid()"
+      (click)="onSubmit()"
+    >
+      {{ submitButtonText() }}
+    </button>
+
+    <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+  </div>
+</form>

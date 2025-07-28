@@ -1,0 +1,42 @@
+.hero-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero-form h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.form-actions button {
+  flex: 1;
+}
+
+@media (max-width: 600px) {
+  .hero-form {
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions button {
+    margin-bottom: 8px;
+  }
+}

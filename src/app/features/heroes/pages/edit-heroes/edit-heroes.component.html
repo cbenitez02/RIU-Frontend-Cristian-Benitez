@@ -1,0 +1,24 @@
+<div class="edit-hero-container">
+  <div class="page-header">
+    <h1>Editar Héroe</h1>
+    <p>Modifique los datos del héroe seleccionado.</p>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <p>Cargando datos del héroe...</p>
+    </div>
+  } @else if (heroToEdit()) {
+    <app-heroes-form
+      [hero]="heroToEdit()"
+      (saveHero)="onSaveHero($event)"
+      (cancelForm)="onCancel()"
+    >
+    </app-heroes-form>
+  } @else {
+    <div class="error-container">
+      <p>No se pudo cargar el héroe solicitado.</p>
+      <button mat-button color="primary" (click)="onCancel()">Volver a la lista</button>
+    </div>
+  }
+</div>
