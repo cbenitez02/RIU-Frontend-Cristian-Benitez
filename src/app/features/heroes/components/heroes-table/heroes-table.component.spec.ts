@@ -181,9 +181,9 @@ describe('HeroesTableComponent', () => {
   });
 
   describe('Paginator integration', () => {
-    it('should set paginator after view init', () => {
-      component.ngAfterViewInit();
-      expect(component.dataSource.paginator).toBe(component.paginator);
+    it('should set paginator when available', () => {
+      fixture.detectChanges();
+      expect(component.dataSource.paginator).toBe(component.paginator());
     });
   });
 

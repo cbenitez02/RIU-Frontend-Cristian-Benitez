@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, effect, inject, input, output, ViewChild } from '@angular/core';
+import { Component, effect, inject, input, output, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -16,12 +16,12 @@ import {
   styleUrls: ['./heroes-table.component.css'],
   imports: [CommonModule, MatTableModule, MatButtonModule, MatPaginatorModule],
 })
-export class HeroesTableComponent implements AfterViewInit {
+export class HeroesTableComponent {
   heroes = input<Hero[]>([]);
   editHero = output<Hero>();
   deleteHero = output<number>();
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  readonly paginator = viewChild.required<MatPaginator>(MatPaginator);
 
   private readonly dialog = inject(MatDialog);
 
@@ -32,10 +32,13 @@ export class HeroesTableComponent implements AfterViewInit {
     effect(() => {
       this.dataSource.data = this.heroes();
     });
-  }
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    effect(() => {
+      const paginator = this.paginator();
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+    });
   }
 
   onEdit(hero: Hero): void {
